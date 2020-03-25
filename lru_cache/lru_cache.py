@@ -18,7 +18,7 @@ class LRUCache:
     def __init__(self, limit=10):
         self.limit = limit
         self.storage = DoublyLinkedList()
-        self.dic = {}
+        self.dic = {} # this magic spot
 
     """
     Retrieves the value associated with the given key. Also
@@ -28,9 +28,13 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
+        # check the dic, if not there return None
         if key in self.dic:
+            # grab the node from the dic at the key
             node = self.dic[key]
+            # since you're messing with it, bring it to the front in the list
             self.storage.move_to_front(node)
+            # return the value from the dic -- position [1]
             return node.value[1]
         else:
             return None
@@ -46,10 +50,16 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
+        # If the key already exists, delete it then add new as head
         if key in self.dic:
             self.storage.delete(self.dic[key])
+        # If at the limit...
         elif len(self.storage) >= self.limit:
+            # grab the node
             node = self.storage.remove_from_tail()
+            # take the key out of the node and delete it from the dic
             del self.dic[node[0]]
+        # add the new thing at the front of the list
         self.storage.add_to_head((key, value))
+        # add the new thing to the dic
         self.dic[key] = self.storage.head
