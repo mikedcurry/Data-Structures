@@ -73,17 +73,52 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        # go all the way to the left, then go one to the right
+        if node.left:
+            node.left.in_order_print(node.left)
+        print(node.value)
+        if node.right:
+            node.right.in_order_print(node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
-        pass
+        # Instantiate Queue
+        q = Queue()
+        # load the given binary tree instantiation into the queue
+        q.enqueue(node)
+        # Loop through the queue, removing values as I go, until empty
+        while q.len():
+            # Remove and print the current_node value
+            c_node = q.dequeue()
+            print(c_node.value)
+            # add right child to queue
+            if c_node.right:
+                q.enqueue(c_node.right)
+            # add left childe to queue
+            if c_node.left:
+                q.enqueue(c_node.left)
+
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        # Instantiate Stack
+        s = Stack()
+        # put the current_node at top of stack
+        s.push(node)
+        # Loop through binary tree, stop when stack is empty
+        while s.len():
+            # much like bft, remove c_node from top and print it's value
+            c_node = s.pop()
+            print(c_node.value)
+            # just like bft only with push
+            if c_node.left:
+                s.push(c_node.left)
+            if c_node.right:
+                s.push(c_node.right)
+
+
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
